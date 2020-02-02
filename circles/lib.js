@@ -35,6 +35,15 @@ function removeCircle(id) {
     listCircles();
 }
 
+function toggleHighRes() {
+    if (!highresEnabled) {
+        enableHighRes();
+    } else {
+        disableHighRes();
+    }
+    location.hash="#" + serialize();
+}
+
 function circle(ctx, r, x, y) {
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 2 * Math.PI);
@@ -75,11 +84,11 @@ function draw(fi, repeat) {
         posY:c.y
     }
     centers.push(point);
-    centers.forEach(function(item){ctx.fillRect(item.posX,item.posY,3,3);});
+    centers.forEach(function(item){ctx.fillRect(item.posX,item.posY,lineThickness,lineThickness);});
 
     if (repeat) {
         if (fi < 360) {
-            timer = setTimeout(function() {draw(fi+0.2, true);}, 1);
+            timer = setTimeout(function() {draw(fi+dFi, true);}, 5);
         }
     } else {
         clearTimeout(timer);
@@ -91,8 +100,11 @@ function draw(fi, repeat) {
 function serialize() {
     var string="";
     circles.forEach(function(item) {
-        string = string + ";" + item.speed + ":" + item.direction
+        string = string + ";c=" + item.speed + ":" + item.direction
     });
+    if (highresEnabled) {
+        string = string + ";res=H";
+    }
     return string;
 }
 
@@ -101,13 +113,20 @@ function deserialize(string) {
     var list = "";
     string.split(";").forEach(function(item) {
         if (item) {
-            kv = item.split(":");
-            circleDef = {
-                id: circleId++,
-                speed: kv[0],
-                direction: kv[1]
+            kv = item.split("=");
+            if (kv[0] == "c") {
+                cDef = kv[1].split(":");
+                circleDef = {
+                    id: circleId++,
+                    speed: cDef[0],
+                    direction: cDef[1]
+                }
+                circles.push(circleDef)
+            } else if (kv[0] == "res") {
+                if (kv[1]=="H") {
+                    enableHighRes();
+                }
             }
-            circles.push(circleDef)
         }
     })
 }
@@ -122,6 +141,19 @@ function listCircles() {
     document.getElementById("circles").innerHTML=list;
 }
 
+function enableHighRes() {
+    highresEnabled=true;
+    dFi=0.02;
+    lineThickness = 3;
+    document.getElementById("highres").checked="checked";
+}
+
+function disableHighRes() {
+    highresEnabled=false;
+    dFi=0.1;
+    lineThickness = 3;
+    document.getElementById("highres").checked="";
+}
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
@@ -132,6 +164,10 @@ var centerY = canvas.height / 2;
 
 var r = centerY;
 var rDevision=2;
+
+var highresEnabled=false;
+var dFi=0.1;
+var lineThickness = 3;
 
 var centers = [];
 var circles = [];

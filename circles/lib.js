@@ -55,14 +55,14 @@ function circle(ctx, r, x, y) {
 }
 
 function calculate(fi, r, outerCenterX, outerCenterY, speed, direction) {
-    innerR = r/rDevision;
+    innerR = r/rDivision;
     if (direction == "R") {
         fi = -fi;
     }
     var res = {
         r:innerR,
-        x:Math.sin(speed * fi/180 * Math.PI) * (innerR) + outerCenterX,
-        y:Math.cos(speed * fi/180 * Math.PI) * (innerR) + outerCenterY
+        x:Math.sin(speed * fi/180 * Math.PI) * (r - innerR) + outerCenterX,
+        y:Math.cos(speed * fi/180 * Math.PI) * (r - innerR) + outerCenterY
     }
     return res;
 }
@@ -167,7 +167,7 @@ var centerX = canvas.width / 2;
 var centerY = canvas.height / 2;
 
 var r = centerY;
-var rDevision=2;
+var rDivision=2;
 
 var highresEnabled=false;
 var dFi=0.2;

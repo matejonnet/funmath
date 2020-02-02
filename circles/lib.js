@@ -138,9 +138,9 @@ function deserialize(string) {
 function listCircles() {
     var list = "";
     circles.forEach(function(item) {
-        list = list + "speed: " + item.speed + " direction: " + item.direction;
-        list = list + " <span onclick=\"javascript:removeCircle('" + item.id + "')\" style=\"cursor:pointer\"> :remove:</span> ";
-        list = list + " <br />";
+        list = list + "<p>loops: " + item.speed + " - direction: " + item.direction;
+        list = list + " <button onclick=\"javascript:removeCircle('" + item.id + "')\">remove</button>";
+        list = list + "</p>";
     })
     document.getElementById("circles").innerHTML=list;
 }

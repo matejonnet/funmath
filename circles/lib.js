@@ -1,3 +1,7 @@
+function reDraw() {
+    draw(0, false);
+}
+
 function addCircle() {
     var speed = document.getElementById("speed").value;
     var direction;
@@ -150,7 +154,7 @@ function enableHighRes() {
 
 function disableHighRes() {
     highresEnabled=false;
-    dFi=0.1;
+    dFi=0.2;
     lineThickness = 3;
     document.getElementById("highres").checked="";
 }
@@ -166,7 +170,7 @@ var r = centerY;
 var rDevision=2;
 
 var highresEnabled=false;
-var dFi=0.1;
+var dFi=0.2;
 var lineThickness = 3;
 
 var centers = [];

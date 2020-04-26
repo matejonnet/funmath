@@ -2,7 +2,7 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
 // the link to your model provided by Teachable Machine export panel
-const URL = "/tm-scege-broska-model/";
+const URL = "/funmath/teachablemachine/tm-scege-broska-model/";
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -55,7 +55,7 @@ async function predict() {
             }
         }
     }
-    if (match > 5) {
+    if (match > 3) {
         webcam.stop();
         alert("bzzzzzz ...");
     }

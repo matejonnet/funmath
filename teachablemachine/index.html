@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Object search demo</title>
+    <style>
+        #probability-box {
+            width:200px;
+            border: 1px solid black;
+            height: 15px;
+        }
+        #probability {
+	        background-color: green;
+	        width: 0;
+	        height: 100%;
+        }
+    </style>
 </head>
 <body>
 <div>Start your camera and look around for this object.</div>
@@ -11,6 +23,10 @@
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
 <div id="label-container"></div>
+<div id="debug"></div>
+<div id="probability-box">
+    <div id="probability"></div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 <script src="/funmath/teachablemachine/tm-script.js"></script>

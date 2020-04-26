@@ -21,12 +21,15 @@ async function init() {
     // Convenience function to setup a webcam
     const flip = true; // whether to flip the webcam
     webcam = new tmImage.Webcam(400, 400, flip); // width, height, flip
-    await webcam.setup(); // request access to the webcam
+    //{'facingMode' : 'environment'} use rear camera
+    await webcam.setup({'facingMode' : 'environment'}); // request access to the webcam
     await webcam.play();
     window.requestAnimationFrame(loop);
 
     // append elements to the DOM
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    var webcamContainer=document.getElementById("webcam-container");
+    webcamContainer.innerHTML='';
+    webcamContainer.appendChild(webcam.canvas);
     labelContainer = document.getElementById("label-container");
     for (let i = 0; i < maxPredictions; i++) { // and class labels
         labelContainer.appendChild(document.createElement("div"));
@@ -39,23 +42,34 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 var match = 0;
+var requiredProbability = 0.9;
+
+var times = [new Date().getTime()];
 // run the webcam image through the image model
 async function predict() {
+
+    times.push(new Date().getTime());
+    var fps = times.length / ((times[times.length - 1] - times[0]) / 1000);
+    if (times.length > 5) {
+        times.shift();
+    }
     // predict can take in an image, video or canvas html element
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) {
-//        const classPrediction =
-//            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-//        labelContainer.childNodes[i].innerHTML = classPrediction;
         if (prediction[i].className == 'scage') {
-            if (prediction[i].probability > 0.7) {
+            if (prediction[i].probability > requiredProbability) {
                 match++;
             } else {
                 match=0;
             }
+            document.getElementById('debug').innerHTML =
+            "Hit >"+requiredProbability+":" + match
+            + " Probability: " + prediction[i].probability.toFixed(2)
+            + " FPS: " + fps.toFixed(2);
+            document.getElementById("probability").style.width = (prediction[i].probability * 100).toFixed(0) + "%";
         }
     }
-    if (match > 3) {
+    if (match > 8) {
         webcam.stop();
         alert("bzzzzzz ...");
     }

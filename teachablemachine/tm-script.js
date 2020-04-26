@@ -2,7 +2,9 @@
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
 
 // the link to your model provided by Teachable Machine export panel
-const URL = "/funmath/teachablemachine/tm-scege-broska-model/";
+const URL = "/funmath/teachablemachine/model/";
+const requiredProbability = 0.85;
+const min_matches = 8
 
 let model, webcam, labelContainer, maxPredictions;
 
@@ -42,7 +44,6 @@ async function loop() {
     window.requestAnimationFrame(loop);
 }
 var match = 0;
-var requiredProbability = 0.9;
 
 var times = [new Date().getTime()];
 // run the webcam image through the image model
@@ -56,7 +57,7 @@ async function predict() {
     // predict can take in an image, video or canvas html element
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) {
-        if (prediction[i].className == 'scage') {
+        if (prediction[i].className == 'clit') {
             if (prediction[i].probability > requiredProbability) {
                 match++;
             } else {
@@ -69,7 +70,7 @@ async function predict() {
             document.getElementById("probability").style.width = (prediction[i].probability * 100).toFixed(0) + "%";
         }
     }
-    if (match > 8) {
+    if (match >= min_matches) {
         webcam.stop();
         alert("bzzzzzz ...");
     }

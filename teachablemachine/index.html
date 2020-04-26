@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Object search demo</title>
     <style>
+        @media all and (max-width: 400px) {
+            #webcam-container {
+                width:100%;
+            }
+        }
         #probability-box {
             width:200px;
             border: 1px solid black;
@@ -20,7 +25,7 @@
 <body>
 <div>Start your camera and look around for this object.</div>
 <img src="/funmath/teachablemachine/sample.jpg" style="width: 300px;" />
-<button type="button" onclick="init()">Start</button>
+<button type="button" onclick="init()" style="display: block;">Start</button>
 <div id="webcam-container"></div>
 <div id="label-container"></div>
 <div id="debug"></div>
